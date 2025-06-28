@@ -57,6 +57,49 @@ def retrieve(custom_id):
     else:
         return "URL not found! :(", 404
 
+#update URL
+@app.route("/updateUrl", methods=['POST', 'GET'])
+def update_url():
+    if request.method=='POST':
+        updatedUrl=request.form.get('updatedUrl')
+        shortUrl=request.form.get('shortUrl')
+        print(updatedUrl, shortUrl)
+        url_obj=db.urls.find_one({"short_url":shortUrl})
+        updatedTime=datetime.now()
+        if url_obj:
+            db.urls.update_one({"_id":url_obj["_id"]},{"$set":{"url":updatedUrl, "updated":updatedTime}},upsert=True)
+                                # {"$set":{"updated":updatedTime}}, 
+            return "URL successfully updated", 200
+        else:
+            return "URL not found! :(", 404
+
+#delete URL
+@app.route("/deleteUrl", methods=['POST'])
+def delete_url():
+    if request.method=='POST':
+        shortUrl=request.form.get('shortUrl')
+        # print(shortUrl)
+        url_obj=db.urls.find_one({"short_url":shortUrl})
+        if url_obj:
+            db.urls.delete_one({"_id":url_obj["_id"]})
+            print("url deletd")
+            return "URL successfully deleted", 204
+        else:
+            return "URL not found! :(", 404
+
+
+#get stats of the URL
+@app.route("/getStats", methods=['POST'])
+def check_stats():
+    if request.method=='POST':
+        shortUrl=request.form.get('shortUrl')
+        # print(shortUrl)
+        url_obj=db.urls.find_one({"short_url":shortUrl})
+        if url_obj:
+            print(url_obj["hit_counts"])
+            return f"URL was accessed for totat {url_obj["hit_counts"]} times! :D", 200
+        else:
+            return "URL not found! :(", 404
 
 #function to short alphaneumeric code of length 7
 def gen_short_code(limit):

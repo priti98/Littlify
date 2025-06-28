@@ -14,5 +14,24 @@
             <button class="buttons shorten">Shorten URL</button>
         </form>
     </div>
+    <div>
+        <form action="/updateUrl" method="post">
+            <input type="url" name="shortUrl" id="shortUrl" placeholder="Enter the short URL">
+            <input type="url" name="updatedUrl" id="updatedURL" placeholder="Enter updated URL">
+            <button class="buttons update">Update URL</button>
+        </form>
+    </div>
+    <div>
+        <form action="/deleteUrl" method="post">
+            <input type="url" name="shortUrl" id="shortUrl" placeholder="Enter the short URL">
+            <button class="buttons delete">Delete URL</button>
+        </form>
+    </div>
+    <div>
+        <form action="/getStats" method="post">
+            <input type="url" name="shortUrl" id="shortUrl" placeholder="Enter the short URL">
+            <button class="buttons stats">Get Stats</button>
+        </form>
+    </div>
 </body>
 </html>
